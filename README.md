@@ -5,3 +5,5 @@ Labs praticos da prova AWS Devops Engineer - Professional 2020 - DOP01
 ### Index
 
 [Lab 01 - CodeCommit](https://github.com/augustosoouza/aws-devops-engineer-pro-labs/tree/master/Lab%2001%20-%20CodeCommit)
+[Lab 02 - CodeBuild](https://github.com/augustosoouza/aws-devops-engineer-pro-labs/tree/master/Lab%2002%20-%20CodeBuild)
+[Lab 03 - CodeDeploy](https://github.com/augustosoouza/aws-devops-engineer-pro-labs/tree/master/Lab%2003%20-%20CodeDeploy)
