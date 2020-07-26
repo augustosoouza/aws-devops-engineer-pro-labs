@@ -172,7 +172,7 @@ aws iam add-user-to-group --user-name augustosouzalabs --group-name desenvolvedo
 
 7.3 Feito isso, vamos criar a trigger do CodeCommit.
 
-![Image 23](./img/lab7.3.png)
+![Image 23](./img/Lab7.3.png)
 
 7.4 Agora, seguindo a documentação da AWS(https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify-lambda.html), vamos pegar esse codigo python de exemplo.
 
@@ -204,3 +204,16 @@ def lambda_handler(event, context):
 
 ![Image 24](./img/lab7.5.png)
 
+Documentação referencia:
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html
+
+https://aws.amazon.com/blogs/devops/refining-access-to-branches-in-aws-codecommit/
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify.html
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-repository-email.html 
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify-lambda.html
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-migrate-repository-existing.html
