@@ -102,3 +102,13 @@ $ aws deploy push \
 3.4 Após criado, o deploy será iniciado e você terá uma saida semelhante abaixo
 
 ![Image 15](./img/lab3.1.png)
+
+Documentação referencia:
+
+https://docs.aws.amazon.com/codedeploy/latest/APIReference/API_MinimumHealthyHosts.html
+
+https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+
+https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html#appspec-hooks-server
+
+https://docs.amazonaws.cn/en_us/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html#reference-appspec-file-structure-environment-variable-availability
