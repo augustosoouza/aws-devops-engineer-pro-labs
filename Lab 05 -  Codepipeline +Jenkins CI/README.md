@@ -1,4 +1,6 @@
-# Lab 05 AWS CodeTools + Jenkins CI
+# Lab 05 Codepipeline + Jenkins CI
+
+Configurando plugins Jenkins integrados com AWS.
 
 ### 1. Instalando Servidor Jenkins
 
@@ -34,3 +36,47 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 1.5 Pronto, seu Jenkins está pronto para ser usado.
 
 ![Image 04](./img/lab1.4.png)
+
+### 2. Configurando plugin Jenkins Amazon EC2
+
+2.1 Primeiro, precisamos criar uma Role para nossa EC2 que permita que o Jenkins possa se comunicar com nossa EC2.
+
+2.2 Vamos em IAM, criaremos uma role com politica de acesso Full a EC2 e anexamos a nossa EC2.
+
+2.3 Voltando, no menu lateral vamos em Manage jenkins e depois em Manage Plugins.
+
+2.4 Agora vamos em available e procuramos por EC2 selecionar o plugin Amazon EC2 e clicar em Install
+
+![Image 05](./img/lab2.1.png)
+
+2.5 Instalado, agora vamos configura-lo. No menu lateral, vamos em Manage Jenkins > Manage Nodes and Clouds > Configure Clouds > Add new Cloud > EC2.
+
+2.6 Para essa configuração existe duas maneiras. A primeira, através da criação de um usuario IAM e passar para o Jenkins Key e Secrets. A segunda, que será o nosso caso, será autenticar com o perfil atual da EC2 usando Chave privada. Essa chave é a mesma do arquivo pem gerado ao criar sua EC2. Copiamos a chave e testamos a conexão. A mensagem será "success"
+
+![Image 05](./img/lab2.2.png)
+
+2.7 Agora vamos configurar a AMI do Jenkins Slave baseado nas informações do master. Feito, clicamos em save.
+
+![Image 06](./img/lab2.3.png)
+
+2.8 Agora vamos criar nosso primeiro Job no Jenkins para testar o plugin. Usaremos o Job Free-Style. Vou chama-lo de "teste-plugin" e clicar em ok.
+
+![Image 07](./img/lab2.4.png)
+
+2.9 Agora vamos configurar o Job, primeiro vamos add a "label Expression" que neste caso definimos com AWS. Depois em add build step, vou colocar dois bash commands para iniciar o job. Feito, clicar em Save.
+
+![Image 08](./img/lab2.5.png)
+![Image 09](./img/lab2.6.png)
+
+2.10 Agora podemos ver que o Job foi iniciado, e no dashboard do EC2 podemos ver que uma nova instancia foi inicializada. 
+
+![Image 10](./img/lab2.7.png)
+![Image 11](./img/lab2.8.png)
+
+2.11 Novamente em  Manage Jenkins > Manage Nodes and Clouds podemos ver que agora temos um slave, que conforme configuramos, permanecerá disponivel por 10 minutos ocioso.
+
+![Image 12](./img/lab2.9.png)
+
+2.12 Em console Output conseguimos ver os comandos que definimos no build se foram executados com sucesso. E ai estão
+
+![Image 13](./img/lab2.10.png)
