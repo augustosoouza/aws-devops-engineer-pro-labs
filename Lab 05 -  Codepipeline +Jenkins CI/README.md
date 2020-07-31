@@ -80,3 +80,51 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 2.12 Em console Output conseguimos ver os comandos que definimos no build se foram executados com sucesso. E ai estão
 
 ![Image 13](./img/lab2.10.png)
+
+
+### 3. Integrando o Jenkins com Codepipeline
+
+3.1 Primeiro, precisamos criar uma Role para nossa EC2 que permita que o Jenkins integrar com o Codepipeline. Podemos usar a mesma role do lab anterior e adicionar a policy "AWSCodePipelineCustomActionAccess"
+
+3.2 Agora no Jenkins, vamos em Manage Jenkins > Manage Plugins. Instale o Plugin **AWS CodePipeline**. Na tela de instalação, marcar o Jenkins para restart para concluir instalação.
+
+![Image 14](./img/lab3.1.png)
+
+3.3 No Dashboard do Jenkins, criar um novo item e selecionar FreeStyle. Clicar em OK
+
+![Image 14](./img/lab3.2.png)
+
+3.4 Em General, selecionar a opção "Execute concurrent builds if necessary" e clicar em avançado
+
+![Image 15](./img/lab3.3.png)
+
+3.5 Em Source Code Management selecionar AWS CodePipeline, e escolher a região onde está contruido sua pipeline. Em credenciais há duas opções ou configurar diretamente na EC2 ou passar a credencial na config. Para agilizar, vamos passar aqui na config.
+
+![Image 16](./img/lab3.4.png)
+
+3.6 Ainda em Source Code Management, definir a categoria test e dar um nome pro provider(Esse nome deverá ser o meso na pipeline)
+
+![Image 17](./img/lab3.5.png)
+
+3.7 Em build Triggers, desmarcar todos os campos e deixar Poll SCM. Em Schedule adicionar 5 * com  espaço entre eles.
+
+![Image 18](./img/lab3.6.png)
+
+3.8 Em Build clique em "add build step" e selecionar shell. Adicionar "rake". Em Post-build Action, "add post-build action" e deixar em branco. Clicar em Save
+
+![Image 17](./img/lab3.7.png)
+
+3.9 Agora voltado ao Codepipeline, na pipeline, clicar em Edit. então, vamos em build > edit stage > Add Action Group. em Edit Action, vamos adicionar as seguintes informações. Action Name (ex: test), Action Provider (Add Jenkins), Impult Artifacts (buildArtifact), Provider name (O mesmo do Jenkins), Server URL (DNS da EC2), Project Name (O mesmo do Jenkins). Então, clique em "Done"
+
+![Image 18](./img/lab3.8.png)
+
+3.10 Salve a edição da pipeline e depois clique em "Release Change"
+
+Documentação Referencia
+
+* https://docs.aws.amazon.com/pt_br/codepipeline/latest/userguide/tutorials-four-stage-pipeline.html
+
+* https://plugins.jenkins.io/aws-codepipeline/
+
+* https://plugins.jenkins.io/ec2/
+
