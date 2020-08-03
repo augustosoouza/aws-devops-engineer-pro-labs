@@ -192,6 +192,20 @@ Outputs:
     Value: !Ref VPC
 ~~~
 
+3.4 Agora, adicionar o SG em Resources da root Stack
+
+~~~yaml
+SecurityGroupStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://augustoosouza-labs-awsdevopspro.s3.amazonaws.com/Cloudformation-templates/sg-stack.yml'
+      Parameters:
+        VPCID: !GetAtt 
+          - VPCStack
+          - Outputs.VPCID
+~~~
+
+
 3.3 Agora criamos a stack do SecurityGroup usando o output "VPC ID"
 
 ~~~yaml
@@ -219,3 +233,73 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
 ~~~
+
+3.4 Vamos fazer o deploy e validar nossa Nested Stack. E Show, está funcionando!
+
+![Image 01](./img/lab1.5.png)
+
+### 4. Trabalhando com Mappings para templates reutilizaveis.
+
+4.1 Vamos Agora usar mappings para criar templates reutilizaveis. Primeiro passo, vamos em root-stack e vamos mudar Parameters e adicionar mappings
+
+~~~yaml
+Mappings:
+  VPCCIDRBlock:
+    vpc1:
+      cidr: 172.0.0.0/16
+    vpc2:
+      cidr: 192.0.0.0/16
+~~~
+
+4.2 E vamos mudar os parametros, adicionando tambem mais uma VPC:
+
+~~~yaml
+Resources:
+  VPCStack1:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: >-
+        https://augustoosouza-labs-awsdevopspro.s3.amazonaws.com/Cloudformation-templates/network_stack.yml
+      Parameters:
+        VPCCIDRBlock: !FindInMap 
+          - VPCCIDRBlock
+          - vpc1
+          - cidr
+  VPCStack2:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: >-
+        https://augustoosouza-labs-awsdevopspro.s3.amazonaws.com/Cloudformation-templates/network_stack.yml
+      Parameters:
+        VPCCIDRBlock: !FindInMap 
+          - VPCCIDRBlock
+          - vpc2
+          - cidr
+~~~
+
+4.3 E mais um Security Group
+
+~~~yaml
+  SecurityGroupStack1:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: >-
+        https://augustoosouza-labs-awsdevopspro.s3.amazonaws.com/Cloudformation-templates/sg-stack.yml
+      Parameters:
+        VPCID: !GetAtt 
+          - VPCStack1
+          - Outputs.VPCID
+  SecurityGroupStack2:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: >-
+        https://augustoosouza-labs-awsdevopspro.s3.amazonaws.com/Cloudformation-templates/sg-stack.yml
+      Parameters:
+        VPCID: !GetAtt 
+          - VPCStack2
+          - Outputs.VPCID
+~~~
+
+4.4 Bastar fazer deploy e stack construida com sucesso.
+
+![Image 01](./img/lab1.6.png)
